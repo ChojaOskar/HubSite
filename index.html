@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* --- Scrolling Animation --- */
+        .scroller {
+            overflow: hidden;
+            /* RE-ADDED: webkit-mask and mask properties */
+            -webkit-mask: linear-gradient(90deg, transparent, white 20%, white 80%, transparent);
+            mask: linear-gradient(90deg, transparent, white 20%, white 80%, transparent);
+            /* Removed: position: relative; as it's not needed for pseudo-elements anymore */
+        }
+
+        .scroller-inner {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 1.5rem;
+            animation: scroll 25s linear infinite;
+            transform: translateX(0%);
+        }
+
+        @media (min-width: 640px) { /* sm breakpoint */
+            .scroller-inner {
+                padding-left: 5%; 
+            }
+        }
+
+        @media (min-width: 768px) { /* md breakpoint */
+            .scroller-inner {
+                padding-left: 10%;
+            }
+        }
+
+        :root {
+            --tile-width: 240px;
+            --tile-height: 144px;
+            --gap-width: 24px;
+            /* --bg-color-rgb is no longer needed for the mask fade */
+        }
+
+        @media (min-width: 768px) {
+            :root {
+                --tile-width: 256px;
+                --tile-height: 160px;
+            }
+        }
+
+        @keyframes scroll {
+            to {
+                transform: translateX(calc(-1 * (var(--tile-width) * 5 + var(--gap-width) * 5))); 
+            }
+        }
+
+        .scroller:hover .scroller-inner {
+            animation-play-state: paused;
+        }
+        
+        /* --- Holographic Tile Effect --- */
+        .tile {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .tile .tile-text {
+            position: relative;
+            z-index: 2;
+            transition: all 0.5s ease;
+            /* opacity: 0; */ 
+        }
+
+        .tile::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                0deg,
+                transparent,
+                transparent 40%,
+                rgba(0, 255, 255, 0.3),
+                transparent 60%,
+                transparent
+            );
+            transform: rotate(-45deg);
+            transition: all 0.5s ease;
+            opacity: 0;
+            z-index: 1;
+        }
+
+        /* --- Hover State --- */
+        .tile:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        }
+        
+        .tile:hover .tile-text {
+            color: #0ff;
+            transform: scale(1.05);
+        }
+
+        .tile:hover::before {
+            opacity: 1;
+            transform: rotate(-45deg) translateY(60%);
+        }
+
+        /* --- Specific styles for Qubit Nexus tile with image background --- */
+        .qubit-nexus-tile {
+            background-image: url('qubit2.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: white;
+        }
+
+        .qubit-nexus-tile:hover::before {
+            background: linear-gradient(
+                0deg,
+                transparent,
+                transparent 40%,
+                rgba(0, 255, 255, 0.5),
+                transparent 60%,
+                transparent
+            );
+        }
+
+        /* REMOVED: Fade effect on the edges (::before and ::after pseudo-elements) */
+
+        /* Mobile-specific adjustments */
+        @media (max-width: 639px) {
+            h1 {
+                font-size: 3rem;
+            }
+
+            p {
+                font-size: 1rem;
+                margin-bottom: 2rem;
+            }
+
+            .scroller-inner {
+                padding-left: 10px;
+            }
+
+            .tile .tile-text {
+                font-size: 1.1rem;
+            }
+
+            .tile {
+                width: 180px;
+                height: 108px;
+            }
+            
+            :root {
+                --tile-width: 180px; 
+                --tile-height: 108px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white flex flex-col items-center justify-center min-h-screen p-4 overflow-x-hidden">
+
+    <div class="w-full max-w-5xl text-center">
+        <h1 class="text-5xl md:text-6xl font-bold mb-4">Welcome</h1>
+        <p class="text-lg text-gray-400 mb-16">Our projects and works in progress. Click a tile to learn more.</p>
+
+        <div class="scroller w-full py-4"> 
+            <div class="scroller-inner">
+                <a href="https://qubitnexus.com/" target="_blank" class="tile group qubit-nexus-tile">
+                    <span class="tile-text"></span>
+                </a>
+                <a href="https://example.com/video-game" target="_blank" class="tile group bg-teal-700">
+                    <span class="tile-text">Video Game</span>
+                </a>
+                <a href="https://aleo.com/pl/firma/konrad-gurga-it-solutions-debica" target="_blank" class="tile group bg-sky-700">
+                    <span class="tile-text">Konrad Gurga IT Solutions</span>
+                </a>
+                <div class="tile-disabled">
+                    <span class="tile-text">Coming Soon</span>
+                </div>
+                <div class="tile-disabled">
+                     <span class="tile-text">Coming Soon</span>
+                </div>
+
+                <a href="https://qubitnexus.com/" target="_blank" class="tile group qubit-nexus-tile">
+                    <span class="tile-text"></span>
+                </a>
+                <a href="https://example.com/video-game" target="_blank" class="tile group bg-teal-700">
+                    <span class="tile-text">Video Game</span>
+                </a>
+                <a href="https://aleo.com/pl/firma/konrad-gurga-it-solutions-debica" target="_blank" class="tile group bg-sky-700">
+                    <span class="tile-text">Konrad Gurga IT Solutions</span>
+                </a>
+                <div class="tile-disabled">
+                    <span class="tile-text">Coming Soon</span>
+                </div>
+                <div class="tile-disabled">
+                    <span class="tile-text">Coming Soon</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function applyClasses(selector, classes) {
+            document.querySelectorAll(selector).forEach(el => {
+                el.classList.add(...classes);
+            });
+        }
+
+        const baseTileClasses = [
+            'rounded-2xl',
+            'flex-shrink-0', 'flex', 'items-center', 'justify-center', 
+            'text-center', 'p-4'
+        ];
+
+        const activeTileClasses = ['cursor-pointer'];
+        
+        const textClasses = ['font-semibold', 'text-white', 'text-xl'];
+
+        const disabledTileClasses = [
+            ...baseTileClasses, 'bg-gray-800', 'filter', 'grayscale', 
+            'opacity-60', 'cursor-not-allowed'
+        ];
+
+        const allTiles = document.querySelectorAll('.tile, .tile-disabled');
+        allTiles.forEach(el => {
+            el.classList.add(...baseTileClasses);
+            if (el.classList.contains('tile')) {
+                el.classList.add(...activeTileClasses);
+            } else if (el.classList.contains('tile-disabled')) {
+                el.classList.add(...disabledTileClasses);
+            }
+        });
+
+        document.querySelectorAll('.tile:not(.qubit-nexus-tile)').forEach(el => {
+            if (el.classList.contains('bg-teal-700')) { /* Has color */ }
+            else if (el.classList.contains('bg-sky-700')) { /* Has color */ }
+        });
+
+        applyClasses('.tile-text', textClasses);
+
+        document.querySelectorAll('.tile, .tile-disabled').forEach(el => {
+            el.classList.add('w-60', 'h-36');
+            el.classList.add('md:w-64', 'md:h-40');
+        });
+    </script>
+</body>
+</html>
