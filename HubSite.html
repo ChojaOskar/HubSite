@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Hub</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom CSS for the site */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* --- Scrolling Animation --- */
+        .scroller {
+            -webkit-mask: linear-gradient(90deg, transparent, white 20%, white 80%, transparent);
+            mask: linear-gradient(90deg, transparent, white 20%, white 80%, transparent);
+        }
+
+        .scroller-inner {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 1.5rem; /* 24px */
+            /* UPDATED: Animation duration changed from 40s to 30s for faster scroll */
+            animation: scroll 15s linear infinite;
+        }
+
+        @keyframes scroll {
+            to {
+                transform: translate(calc(-50% - 0.75rem)); /* (Half the container width) - (half the gap) */
+            }
+        }
+        
+        .scroller:hover .scroller-inner {
+            animation-play-state: paused;
+        }
+        
+        /* --- Holographic Tile Effect --- */
+        /* Base styles for the active tile to enable the effect */
+        .tile {
+            position: relative; /* Required for pseudo-element positioning */
+            overflow: hidden;   /* Hides the pseudo-element when it's outside the tile */
+            transition: all 0.5s ease;
+        }
+
+        /* The text inside the tile */
+        .tile .tile-text {
+            position: relative; /* Ensures text stays above the holographic layer */
+            z-index: 2;
+            transition: all 0.5s ease;
+        }
+
+        /* The holographic sweep pseudo-element, initially hidden */
+        .tile::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                0deg,
+                transparent,
+                transparent 40%,
+                rgba(0, 255, 255, 0.3),
+                transparent 60%,
+                transparent
+            );
+            transform: rotate(-45deg);
+            transition: all 0.5s ease;
+            opacity: 0;
+            z-index: 1;
+        }
+
+        /* --- Hover State --- */
+        /* Animate the tile on hover */
+        .tile:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        }
+        
+        /* Change text color on hover */
+        .tile:hover .tile-text {
+            color: #0ff; /* Cyan */
+            transform: scale(1.05);
+        }
+
+        /* Animate the holographic sweep into view on hover */
+        .tile:hover::before {
+            opacity: 1;
+            transform: rotate(-45deg) translateY(60%); /* Adjust this to control the sweep position */
+        }
+
+    </style>
+</head>
+<body class="bg-gray-900 text-white flex flex-col items-center justify-center min-h-screen p-4 overflow-x-hidden">
+
+    <!-- Main Content Container -->
+    <div class="w-full max-w-5xl text-center">
+        <!-- Welcome Header -->
+        <h1 class="text-5xl md:text-6xl font-bold mb-4">Welcome</h1>
+        <p class="text-lg text-gray-400 mb-16">Our projects and works in progress. Click a tile to learn more.</p>
+
+        <!-- Scroller Container -->
+        <!-- UPDATED: Added py-4 (padding-top and padding-bottom) to prevent cutoff on hover -->
+        <div class="scroller w-full py-4">
+            <!-- 
+              The list of tiles is duplicated to create a seamless, infinite scroll effect.
+            -->
+            <div class="scroller-inner">
+                <!-- Tiles Set 1 (Primary) -->
+                <!-- UPDATED: Link changed to https://qubitnexus.com/ -->
+                <a href="https://qubitnexus.com/" target="_blank" class="tile group bg-indigo-700">
+                    <span class="tile-text">Qubit Nexus</span>
+                </a>
+                <a href="https://example.com/video-game" target="_blank" class="tile group bg-teal-700">
+                    <span class="tile-text">Video Game</span>
+                </a>
+                <a href="https://example.com/project-alpha" target="_blank" class="tile group bg-sky-700">
+                    <span class="tile-text">Project Alpha</span>
+                </a>
+                <div class="tile-disabled">
+                    <span class="tile-text">Coming Soon</span>
+                </div>
+                <div class="tile-disabled">
+                     <span class="tile-text">Coming Soon</span>
+                </div>
+
+                <!-- Tiles Set 2 (Duplicate for seamless scroll) -->
+                <!-- UPDATED: Link changed to https://qubitnexus.com/ -->
+                <a href="https://qubitnexus.com/" target="_blank" class="tile group bg-indigo-700">
+                    <span class="tile-text">Qubit Nexus</span>
+                </a>
+                <a href="https://example.com/video-game" target="_blank" class="tile group bg-teal-700">
+                    <span class="tile-text">Video Game</span>
+                </a>
+                <a href="https://example.com/project-alpha" target="_blank" class="tile group bg-sky-700">
+                    <span class="tile-text">Project Alpha</span>
+                </a>
+                <div class="tile-disabled">
+                    <span class="tile-text">Coming Soon</span>
+                </div>
+                <div class="tile-disabled">
+                    <span class="tile-text">Coming Soon</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- This script applies shared Tailwind classes to avoid repetition -->
+    <script>
+        function applyClasses(selector, classes) {
+            document.querySelectorAll(selector).forEach(el => {
+                el.classList.add(...classes);
+            });
+        }
+
+        // Shared classes for all tiles (active and disabled)
+        const baseTileClasses = [
+            'w-60', 'h-36', 'md:w-64', 'md:h-40', /* Rectangular dimensions */
+            'rounded-2xl', /* Rounded corners */
+            'flex-shrink-0', 'flex', 'items-center', 'justify-center', 
+            'text-center', 'p-4'
+        ];
+
+        // Classes for active, clickable tiles
+        const activeTileClasses = ['cursor-pointer'];
+        
+        // Classes for the text inside all tiles
+        const textClasses = ['font-semibold', 'text-white', 'text-xl'];
+
+        // Classes for disabled tiles
+        const disabledTileClasses = [
+            ...baseTileClasses, 'bg-gray-800', 'filter', 'grayscale', 
+            'opacity-60', 'cursor-not-allowed'
+        ];
+
+        // Apply the classes
+        applyClasses('.tile', [...baseTileClasses, ...activeTileClasses]);
+        applyClasses('.tile-disabled', disabledTileClasses);
+        applyClasses('.tile-text', textClasses);
+    </script>
+</body>
+</html>
