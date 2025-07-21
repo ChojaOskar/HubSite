@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome Hub</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
@@ -26,8 +24,9 @@
             display: flex;
             flex-wrap: nowrap;
             gap: 1.5rem; /* 24px */
+            padding-left: 10%;
             /* UPDATED: Animation duration changed from 40s to 30s for faster scroll */
-            animation: scroll 15s linear infinite;
+            animation: scroll 18s linear infinite;
         }
 
         @keyframes scroll {
@@ -53,6 +52,8 @@
             position: relative; /* Ensures text stays above the holographic layer */
             z-index: 2;
             transition: all 0.5s ease;
+            /* Optionally hide the text if the image contains it */
+            /* display: none; */ 
         }
 
         /* The holographic sweep pseudo-element, initially hidden */
@@ -96,33 +97,46 @@
             transform: rotate(-45deg) translateY(60%); /* Adjust this to control the sweep position */
         }
 
+        /* --- Specific styles for Qubit Nexus tile with image background --- */
+        .qubit-nexus-tile {
+            background-image: url('qubit2.png'); /* Set your image here */
+            background-size: contain; /* Changed from 'cover' to 'contain' */
+            background-repeat: no-repeat; /* Prevents the image from tiling if there's empty space */
+            background-position: center;
+            background-color: white; /* Button background is white */
+        }
+
+
+        /* Adjust holographic effect for image background if needed */
+        .qubit-nexus-tile:hover::before {
+            background: linear-gradient(
+                0deg,
+                transparent,
+                transparent 40%,
+                rgba(0, 255, 255, 0.5), /* Increased opacity for visibility on image */
+                transparent 60%,
+                transparent
+            );
+        }
+
     </style>
 </head>
 <body class="bg-gray-900 text-white flex flex-col items-center justify-center min-h-screen p-4 overflow-x-hidden">
 
-    <!-- Main Content Container -->
     <div class="w-full max-w-5xl text-center">
-        <!-- Welcome Header -->
         <h1 class="text-5xl md:text-6xl font-bold mb-4">Welcome</h1>
         <p class="text-lg text-gray-400 mb-16">Our projects and works in progress. Click a tile to learn more.</p>
 
-        <!-- Scroller Container -->
-        <!-- UPDATED: Added py-4 (padding-top and padding-bottom) to prevent cutoff on hover -->
         <div class="scroller w-full py-4">
-            <!-- 
-              The list of tiles is duplicated to create a seamless, infinite scroll effect.
-            -->
             <div class="scroller-inner">
-                <!-- Tiles Set 1 (Primary) -->
-                <!-- UPDATED: Link changed to https://qubitnexus.com/ -->
-                <a href="https://qubitnexus.com/" target="_blank" class="tile group bg-indigo-700">
-                    <span class="tile-text">Qubit Nexus</span>
+                <a href="https://qubitnexus.com/" target="_blank" class="tile group qubit-nexus-tile">
+                    <span class="tile-text"></span>
                 </a>
                 <a href="https://example.com/video-game" target="_blank" class="tile group bg-teal-700">
                     <span class="tile-text">Video Game</span>
                 </a>
-                <a href="https://example.com/project-alpha" target="_blank" class="tile group bg-sky-700">
-                    <span class="tile-text">Project Alpha</span>
+                <a href="https://aleo.com/pl/firma/konrad-gurga-it-solutions-debica" target="_blank" class="tile group bg-sky-700">
+                    <span class="tile-text">Konrad Gurga IT Solutions</span>
                 </a>
                 <div class="tile-disabled">
                     <span class="tile-text">Coming Soon</span>
@@ -131,9 +145,7 @@
                      <span class="tile-text">Coming Soon</span>
                 </div>
 
-                <!-- Tiles Set 2 (Duplicate for seamless scroll) -->
-                <!-- UPDATED: Link changed to https://qubitnexus.com/ -->
-                <a href="https://qubitnexus.com/" target="_blank" class="tile group bg-indigo-700">
+                <a href="https://qubitnexus.com/" target="_blank" class="tile group qubit-nexus-tile">
                     <span class="tile-text">Qubit Nexus</span>
                 </a>
                 <a href="https://example.com/video-game" target="_blank" class="tile group bg-teal-700">
@@ -152,7 +164,6 @@
         </div>
     </div>
 
-    <!-- This script applies shared Tailwind classes to avoid repetition -->
     <script>
         function applyClasses(selector, classes) {
             document.querySelectorAll(selector).forEach(el => {
@@ -181,7 +192,9 @@
         ];
 
         // Apply the classes
-        applyClasses('.tile', [...baseTileClasses, ...activeTileClasses]);
+        // Note: qubit-nexus-tile will get its background from its specific CSS rule, not here.
+        applyClasses('.tile:not(.qubit-nexus-tile)', [...baseTileClasses, ...activeTileClasses]);
+        applyClasses('.qubit-nexus-tile', [...baseTileClasses, ...activeTileClasses]); // Apply base and active to qubit-nexus-tile too
         applyClasses('.tile-disabled', disabledTileClasses);
         applyClasses('.tile-text', textClasses);
     </script>
