@@ -146,8 +146,22 @@
                 margin-bottom: 2rem;
             }
 
+            .scroller {
+                -webkit-mask: none;
+                mask: none;
+                overflow: visible;
+                height: 400px; /* Adjust as needed */
+                overflow-y: auto; /* Enable vertical scrolling */
+            }
+
             .scroller-inner {
-                padding-left: 10px;
+                flex-direction: column;
+                animation: none;
+                align-items: center;
+                padding-left: 0;
+                transform: none; /* Reset transform */
+                flex-wrap: wrap; /* Allow wrapping */
+                justify-content: flex-start;
             }
 
             .tile .tile-text {
@@ -155,13 +169,13 @@
             }
 
             .tile {
-                width: 180px;
-                height: 108px;
+                width: 280px; /* Make tiles wider for vertical layout */
+                height: 120px;
             }
             
             :root {
-                --tile-width: 180px; 
-                --tile-height: 108px;
+                --tile-width: 280px; 
+                --tile-height: 120px;
             }
         }
 
@@ -230,6 +244,9 @@
                 line-height: 60px; /* Adjusted for mobile */
                 font-size: 30px; /* Adjusted for mobile */
             }
+            .duplicate {
+                display: none !important;
+            }
         }
     </style>
 </head>
@@ -257,19 +274,19 @@
                      <span class="tile-text">Coming Soon</span>
                 </div>
 
-                <a href="https://qubitnexus.com/" target="_blank" class="tile group qubit-nexus-tile">
+                <a href="https://qubitnexus.com/" target="_blank" class="tile group qubit-nexus-tile duplicate">
                     <span class="tile-text"></span>
                 </a>
-                <a href="https://example.com/video-game" target="_blank" class="tile group bg-teal-700">
+                <a href="https://example.com/video-game" target="_blank" class="tile group bg-teal-700 duplicate">
                     <span class="tile-text">Video Game</span>
                 </a>
-                <a href="https://aleo.com/pl/firma/konrad-gurga-it-solutions-debica" target="_blank" class="tile group bg-sky-700">
+                <a href="https://aleo.com/pl/firma/konrad-gurga-it-solutions-debica" target="_blank" class="tile group bg-sky-700 duplicate">
                     <span class="tile-text">Konrad Gurga IT Solutions</span>
                 </a>
-                <div class="tile-disabled">
+                <div class="tile-disabled duplicate">
                     <span class="tile-text">Coming Soon</span>
                 </div>
-                <div class="tile-disabled">
+                <div class="tile-disabled duplicate">
                     <span class="tile-text">Coming Soon</span>
                 </div>
             </div>
